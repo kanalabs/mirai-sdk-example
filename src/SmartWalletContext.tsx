@@ -17,6 +17,7 @@ import {
 } from "@web3auth/base";
 
 import { initializeSdkGateway, NetworkNames, SDKGateway } from "@kanalabs/mirai";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 export enum ConnectType {
   METAMASK,
@@ -73,7 +74,10 @@ export const SmartWalletProvider = ({ children }: { children: ReactNode }) => {
           web3AuthNetwork: "mainnet",
         });
 
-
+        const privateKeyProvider = new EthereumPrivateKeyProvider({
+          config: { chainConfig },
+        });
+        
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
             network: "mainnet",
@@ -82,9 +86,10 @@ export const SmartWalletProvider = ({ children }: { children: ReactNode }) => {
           loginSettings: {
             mfaLevel: "none",
           },
+          privateKeyProvider,
         });
         web3auth.configureAdapter(openloginAdapter);
-        web3auth.on(ADAPTER_EVENTS.CONNECTED, async (data: CONNECTED_EVENT_DATA) => {
+        web3auth.on(ADAPTER_EVENTS.CONNECTED, async () => {
           setLoggedIn(true);
           const sdk = await initializeSdkGateway(
             {

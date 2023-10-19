@@ -4,7 +4,6 @@ import RPC from "./web3RPC"; // for using web3.js
 import { ethers, utils } from "ethers";
 import { useSmartWalletProvider } from "./SmartWalletContext";
 import { ThreeDots } from "react-loader-spinner";
-//import RPC from "./ethersRPC"; // for using ethers.js
 import logo from './kana-labs-logo.svg';
 
 function App() {
