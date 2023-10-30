@@ -93,13 +93,18 @@ export const SmartWalletProvider = ({ children }: { children: ReactNode }) => {
           setLoggedIn(true);
           const sdk = await initializeSdkGateway(
             {
-              privateKey: formatPrivateKey(await web3auth.provider?.request({
-                method: 'private_key',
-              })),
+              privateKey: formatPrivateKey(
+                await web3auth.provider?.request({
+                  method: "private_key",
+                })
+              ),
             },
-            [NetworkNames.Polygon]
-          )
-          const instance = sdk.setCurrentInstance(NetworkNames.Polygon)
+            {
+              networks: [NetworkNames.Polygon],
+              projectKey: '',
+            }
+          );
+          const instance = sdk.setCurrentInstance(NetworkNames.Polygon);
           setMiraiSDK(sdk)
           setMiraiInstance(instance)
         });
