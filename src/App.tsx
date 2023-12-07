@@ -5,6 +5,8 @@ import { ethers, utils } from "ethers";
 import { useSmartWalletProvider } from "./SmartWalletContext";
 import { ThreeDots } from "react-loader-spinner";
 import logo from './kana-labs-logo.svg';
+import { useSDK } from '@metamask/sdk-react';
+import { PrimeSdk, Web3WalletProvider, MetaMaskWalletProvider } from "@etherspot/prime-sdk";
 
 function App() {
   const [loader, setLoader] = useState<boolean>(false);
@@ -13,6 +15,8 @@ function App() {
 
   } = useSmartWalletProvider();
   const [inputAddress, setInputAddress] = useState('');
+  const { sdk, connected, connecting, provider: metaMaskProvider, chainId } = useSDK();
+
   const handleAddressChange = (event: { target: { value: SetStateAction<string>; }; }) => {
     setInputAddress(event.target.value);
   };
@@ -195,6 +199,16 @@ function App() {
 
   const sleep = (ms: any) => new Promise((resolve) => setTimeout(resolve, ms));
 
+  const handleMetaMaskLogin = async () => {
+    console.log("handleMetaMaskLogin")
+    const accounts = await sdk?.connect();
+    console.log("accounts: ", accounts)
+    const mappedProvider = new Web3WalletProvider(provider);
+    await mappedProvider.refresh();
+    const primeSdk = new PrimeSdk(mappedProvider, { chainId: 80001, projectKey: '' });
+    console.log("primeSdk: ", primeSdk)
+  }
+
   const loggedInView = (
     <>
       <div className="flex-container">
@@ -344,7 +358,10 @@ function App() {
   const unloggedInView = (
     <>
       <button onClick={login} className="card">
-        Login
+        Social Login
+      </button>
+      <button onClick={() => handleMetaMaskLogin()} className="card">
+        MetaMask Login
       </button>
     </>
   );

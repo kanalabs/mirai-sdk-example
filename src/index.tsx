@@ -4,14 +4,23 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { SmartWalletProvider } from './SmartWalletContext';
+import { MetaMaskProvider } from '@metamask/sdk-react';
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
+      <MetaMaskProvider debug={false} sdkOptions={{
+      checkInstallationImmediately: false,
+      dappMetadata: {
+        url: window.location.host,
+      }
+    }}>
     <SmartWalletProvider>
       <App />
     </SmartWalletProvider>
+    </MetaMaskProvider>
   </React.StrictMode>
 );
 
