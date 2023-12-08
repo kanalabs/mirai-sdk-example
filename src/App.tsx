@@ -207,7 +207,7 @@ function App() {
     await mappedProvider.refresh();
     const primeSdk = new PrimeSdk(mappedProvider, { chainId: 80001, projectKey: '' });
     console.log("primeSdk: ", primeSdk)
-    console.log("primeSdk address: ", primeSdk.getCounterFactualAddress())
+    console.log("primeSdk address: ", await primeSdk.getCounterFactualAddress())
   }
 
   const loggedInView = (
